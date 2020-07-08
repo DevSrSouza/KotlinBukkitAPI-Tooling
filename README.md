@@ -1,6 +1,6 @@
 # KotlinBukkitAPI-Tooling [WIP]
 
-The KotlinBukkitAPI Tooling adds Tooling to IntelliJ API when using [KotlinBukkitAPI](https://github.com/DevSrSouza/KotlinBukkitAPI) and [Bukkript](https://github.com/DevSrSouza/Bukkript).
+The KotlinBukkitAPI Tooling is plugin for IntelliJ that helps developers using [KotlinBukkitAPI](https://github.com/DevSrSouza/KotlinBukkitAPI) and scripts for [Bukkript](https://github.com/DevSrSouza/Bukkript).
 
 ## Features
 
