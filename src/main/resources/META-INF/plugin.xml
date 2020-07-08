@@ -1,0 +1,19 @@
+<idea-plugin>
+    <id>br.com.devsrsouza.kotlinbukkitapi.tooling</id>
+    <name>KotlinBukkitAPI Tooling</name>
+    <vendor>DevSrSouza</vendor>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileEditorProvider implementation="br.com.devsrsouza.kotlinbukkitapi.tooling.MenuPreviewFileEditorProvider"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
