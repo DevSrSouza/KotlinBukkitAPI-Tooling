@@ -1,11 +1,12 @@
-package br.com.devsrsouza.kotlinbukkitapi.tooling
+package br.com.devsrsouza.kotlinbukkitapi.tooling.menu
 
-
+import br.com.devsrsouza.kotlinbukkitapi.tooling.bukkript.BukkriptFileType
 import com.intellij.openapi.fileEditor.*
 import com.intellij.openapi.fileEditor.impl.text.TextEditorProvider
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.kotlin.idea.KotlinFileType
+
 class MenuPreviewFileEditorProvider : WeighedFileEditorProvider() {
 
     companion object {
@@ -13,13 +14,13 @@ class MenuPreviewFileEditorProvider : WeighedFileEditorProvider() {
     }
 
     override fun getEditorTypeId(): String =
-        ID
+            ID
 
     override fun accept(project: Project, file: VirtualFile): Boolean {
 
         val type = file.fileType
 
-        if(type != KotlinFileType.INSTANCE) return false
+        if(type != KotlinFileType.INSTANCE && type != BukkriptFileType.INSTANCE) return false
 
         return true
 //        return PsiManager.getInstance(project).findFile(file)?.findDescendantOfType<KtCallExpression> {
@@ -28,9 +29,10 @@ class MenuPreviewFileEditorProvider : WeighedFileEditorProvider() {
     }
 
     override fun createEditor(project: Project, file: VirtualFile): FileEditor {
+        println(file.canonicalPath)
         val editor: TextEditor = TextEditorProvider.getInstance().createEditor(project, file) as TextEditor
         val preview =
-            MenuPreviewFileEditor(project, file, editor)
+                MenuPreviewFileEditor(project, file, editor)
 
         return TextEditorWithPreview(editor, preview, "KotlinBukkitAPI")
     }

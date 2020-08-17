@@ -10,10 +10,22 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <fileEditorProvider implementation="br.com.devsrsouza.kotlinbukkitapi.tooling.MenuPreviewFileEditorProvider"/>
+        <fileEditorProvider implementation="br.com.devsrsouza.kotlinbukkitapi.tooling.menu.MenuPreviewFileEditorProvider"/>
+
+        <fileType language="kotlin" extensions="bk.kts" name="Bukkript File" fieldName="INSTANCE"
+                  implementationClass="br.com.devsrsouza.kotlinbukkitapi.tooling.bukkript.BukkriptFileType" />
+        <internalFileTemplate name="Bukkript Script" />
+        <iconProvider implementation="br.com.devsrsouza.kotlinbukkitapi.tooling.bukkript.BukkriptIconProvider" order="first"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="org.jetbrains.kotlin">
+        <scriptDefinitionsProvider implementation="br.com.devsrsouza.kotlinbukkitapi.tooling.bukkript.BukkriptScriptDefinitionProvider" />
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
+        <action id="Bukkript.NewScript" class="br.com.devsrsouza.kotlinbukkitapi.tooling.bukkript.BukkriptCreateNewFileAction">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFromTemplate"/>
+        </action>
     </actions>
 </idea-plugin>

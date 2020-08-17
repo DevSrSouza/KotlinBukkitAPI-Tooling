@@ -1,4 +1,4 @@
-package br.com.devsrsouza.kotlinbukkitapi.tooling
+package br.com.devsrsouza.kotlinbukkitapi.tooling.menu
 
 enum class MinecraftItem(val id: Int) {
     AIR(0),

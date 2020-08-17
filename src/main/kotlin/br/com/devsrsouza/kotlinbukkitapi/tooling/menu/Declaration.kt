@@ -1,4 +1,4 @@
-package br.com.devsrsouza.kotlinbukkitapi.tooling
+package br.com.devsrsouza.kotlinbukkitapi.tooling.menu
 
 data class MenuDeclaration(
     val displayname: String,

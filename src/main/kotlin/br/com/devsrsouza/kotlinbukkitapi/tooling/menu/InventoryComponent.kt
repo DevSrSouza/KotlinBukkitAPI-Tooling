@@ -1,10 +1,9 @@
-package br.com.devsrsouza.kotlinbukkitapi.tooling
+package br.com.devsrsouza.kotlinbukkitapi.tooling.menu
 
 import com.intellij.util.ImageLoader
 import org.jetbrains.kotlin.utils.keysToMap
 import java.awt.*
 import javax.swing.JPanel
-
 
 class InventoryComponent(
     val declaration: MenuDeclaration

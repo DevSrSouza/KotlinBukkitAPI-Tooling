@@ -1,4 +1,4 @@
-package br.com.devsrsouza.kotlinbukkitapi.tooling
+package br.com.devsrsouza.kotlinbukkitapi.tooling.menu
 
 import com.intellij.psi.util.collectDescendantsOfType
 import com.intellij.psi.util.findDescendantOfType
@@ -14,14 +14,18 @@ import org.jetbrains.kotlin.idea.references.mainReference
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.types.typeUtil.isUnit
 
+private val menuFqSupportedNames = listOf(
+    "br.com.devsrsouza.kotlinbukkitapi.dsl.menu.menu",
+    "br.com.devsrsouza.bukkript.script.definition.api.menu"
+)
+
 fun findMenuDeclaration(
     element: KtCallExpression,
     currentSelectedLine: Int? = null
 ): MenuDeclaration? {
-    val menuFqName = "br.com.devsrsouza.kotlinbukkitapi.dsl.menu.menu"
     val simpleName = "menu"
 
-    if (!element.isCallFrom(simpleName, menuFqName)) return null
+    if (!element.isCallFrom(simpleName, menuFqSupportedNames)) return null
 
     val menuFunction = element.findDescendantOfType<KtCallExpression> {
         isMenuCall(it)
@@ -36,7 +40,7 @@ fun findMenuDeclaration(
         it.isBuilderBlockFor("br.com.devsrsouza.kotlinbukkitapi.dsl.menu.MenuDSL")
     } ?: return null
 
-    val slotFqName = "br.com.devsrsouza.kotlinbukkitapi.dsl.menu.slot"
+    val slotFqName = listOf("br.com.devsrsouza.kotlinbukkitapi.dsl.menu.slot")
     val slotSimpleName = "slot"
 
     val slotCalls = menuLambdaBlock.collectDescendantsOfType<KtCallExpression> {
@@ -82,7 +86,7 @@ fun findMenuDeclaration(
 }
 
 fun isMenuCall(it: KtCallExpression) =
-    it.isCallFrom("menu", "br.com.devsrsouza.kotlinbukkitapi.dsl.menu.menu")
+    it.isCallFrom("menu", menuFqSupportedNames)
 
 fun KtLambdaExpression.isBuilderBlockFor(fqName: String): Boolean {
     val type = resolveType()
@@ -100,7 +104,7 @@ fun KtLambdaExpression.isBuilderBlockFor(fqName: String): Boolean {
 
 fun KtCallExpression.isCallFrom(
     simpleName: String,
-    fqName: String
+    fqNames: List<String>
 ): Boolean {
-    return text.startsWith(simpleName) && isMethodCall(fqName)
+    return text.startsWith(simpleName) && fqNames.any { isMethodCall(it) }
 }

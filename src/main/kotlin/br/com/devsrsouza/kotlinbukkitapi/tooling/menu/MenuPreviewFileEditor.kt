@@ -1,4 +1,4 @@
-package br.com.devsrsouza.kotlinbukkitapi.tooling
+package br.com.devsrsouza.kotlinbukkitapi.tooling.menu
 
 import com.intellij.openapi.editor.event.CaretEvent
 import com.intellij.openapi.editor.event.CaretListener
@@ -73,16 +73,17 @@ class MenuPreviewFileEditor(
         currentScroll = JBScrollPane(
             panel {
                 tree.forEachDescendantOfType<KtCallExpression> {
-                    val declaration = findMenuDeclaration(
-                        it,
-                        currentSelectedLine
-                    )
+                    val declaration =
+                        findMenuDeclaration(
+                            it,
+                            currentSelectedLine
+                        )
                     if (declaration != null) {
                         row {
                             component(
-                                InventoryComponent(
-                                    declaration
-                                )
+                                    InventoryComponent(
+                                            declaration
+                                    )
                             )
                         }
                         menuCount++

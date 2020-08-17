@@ -9,10 +9,14 @@ version = "0.0.1-SNAPSHOT"
 
 repositories {
     jcenter()
+    maven("http://nexus.devsrsouza.com.br/repository/maven-public/")
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+
+    api("br.com.devsrsouza.bukkript:script-definition-embedded:0.1.0-SNAPSHOT")
+
     testCompile("junit", "junit", "4.12")
 }
 
