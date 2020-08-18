@@ -1,7 +1,7 @@
 plugins {
     id("org.jetbrains.intellij") version "0.4.21"
     java
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.0"
 }
 
 group = "br.com.devsrsouza.kotlinbukkitapi"
@@ -15,7 +15,8 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    api("br.com.devsrsouza.bukkript:script-definition-embedded:0.1.0-SNAPSHOT")
+    val changing = Action<ExternalModuleDependency> { isChanging = true }
+    api("br.com.devsrsouza.bukkript:script-definition-embedded:0.1.0-SNAPSHOT", changing)
 
     testCompile("junit", "junit", "4.12")
 }
@@ -24,7 +25,7 @@ dependencies {
 intellij {
     version = "2020.1.2"
 
-    setPlugins("java", "org.jetbrains.kotlin:1.3.72-release-IJ2020.1-3")
+    setPlugins("java", "Kotlin")
 }
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -47,4 +48,8 @@ listOf("compileKotlin", "compileTestKotlin").forEach {
     tasks.getByName<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>(it) {
         kotlinOptions.jvmTarget = "1.8"
     }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor(120, "seconds")
 }
