@@ -9,7 +9,7 @@ val kotlinBukkitAPIVersion = "0.1.0-SNAPSHOT"
 val bukkriptVersion = "0.1.0-SNAPSHOT"
 
 group = "br.com.devsrsouza.kotlinbukkitapi"
-version = "0.0.1"
+version = "0.0.2"
 
 repositories {
     jcenter()
@@ -43,8 +43,14 @@ tasks {
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
+    publishPlugin {
+        token = System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken")
+    }
 }
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
+    sinceBuild("201")
+    untilBuild("202.*")
+
     pluginDescription("""
         <img src="https://github.com/DevSrSouza/KotlinBukkitAPI/raw/master/logo.png" width="417" height="161"/>
         

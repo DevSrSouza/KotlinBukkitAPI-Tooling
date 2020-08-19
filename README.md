@@ -1,5 +1,7 @@
 # KotlinBukkitAPI-Tooling
 
+[![Install Plugin](https://img.shields.io/jetbrains/plugin/v/14913)](https://plugins.jetbrains.com/plugin/14913-kotlinbukkitapi-tooling/)
+
 The KotlinBukkitAPI Tooling is plugin for IntelliJ that helps developers using [KotlinBukkitAPI](https://github.com/DevSrSouza/KotlinBukkitAPI) and scripts for [Bukkript](https://github.com/DevSrSouza/Bukkript).
 
 ## Features
