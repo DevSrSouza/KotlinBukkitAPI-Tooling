@@ -82,9 +82,9 @@ fun generateGradleBuildFileContent(
         |bukkit {
         |    main = "${packageName}.${pluginMainName}"
         |    depend = listOf("KotlinBukkitAPI"${plugins.mapIfNotBlank { ", $it" }})
-        |    ${description.mapIfNotBlank { "description = \"$it\"" }}
-        |    ${author.mapIfNotBlank { "author = \"$it\"" }}
-        |    ${website.mapIfNotBlank { "website = \"$it\"" }}
+        |    description = "$description"
+        |    author = "$author"
+        |    website = "$website"
         |}
         |
         |tasks {

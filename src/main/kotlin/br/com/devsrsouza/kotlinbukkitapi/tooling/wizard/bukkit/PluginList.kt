@@ -4,7 +4,7 @@ import br.com.devsrsouza.kotlinbukkitapi.tooling.wizard.bukkit.ServerVersion.*
 
 private val worldEdit = "com.sk89q.worldedit"
 
-// TODO: Pex, luckperms, plotsquared, multiverse, worldguard
+// TODO: plotsquared, multiverse
 
 val ALL_PLUGINS = listOf(
         Plugin(
@@ -18,6 +18,23 @@ val ALL_PLUGINS = listOf(
                         + listOf(v1_13, v1_14, v1_15, v1_16).asPluginVersion("7.2.0-SNAPSHOT") { setOf("$worldEdit:worldedit-core:$it", "$worldEdit:worldedit-bukkit:$it") }
                 ,
                 setOf("http://maven.sk89q.com/repo/")
+        ),
+        Plugin(
+                "WorldGuard",
+                listOf(v1_8, v1_9, v1_12).asPluginVersion("6.1") { setOf("com.sk89q:worldguard:$it") }
+                        + listOf(v1_13, v1_14, v1_15, v1_16).asPluginVersion("7.0.4-SNAPSHOT") { setOf("com.sk89q.worldguard:worldguard-core:$it", "com.sk89q.worldguard:worldguard-bukkit:$it") }
+                ,
+                setOf("http://maven.sk89q.com/repo/")
+        ),
+        Plugin(
+                "Citizens",
+                allVersion("2.0.27-SNAPSHOT") { setOf("net.citizensnpcs:citizensapi:$it", "net.citizensnpcs:citizens:$it") },
+                setOf("http://repo.citizensnpcs.co/")
+        ),
+        Plugin(
+                "LuckPerms",
+                allVersion("5.1") { setOf("net.luckperms:api:$it") },
+                setOf() // mavenCentral
         ),
         Plugin(
                 "ProtocolLib",
