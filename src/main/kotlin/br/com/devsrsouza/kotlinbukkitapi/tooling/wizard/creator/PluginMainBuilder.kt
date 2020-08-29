@@ -26,7 +26,7 @@ fun generatePluginMainFileContent(
                 
             }
             
-            override fun onPluginDisble() {
+            override fun onPluginDisable() {
             
             }
         }

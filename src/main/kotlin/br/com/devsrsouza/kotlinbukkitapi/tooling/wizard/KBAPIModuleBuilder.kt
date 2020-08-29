@@ -107,15 +107,3 @@ class KBAPIModuleBuilder : JavaModuleBuilder() {
     }
 
 }
-
-inline fun <T : Any?> runWriteTask(crossinline func: () -> T): T {
-    return invokeAndWait {
-        ApplicationManager.getApplication().runWriteAction(Computable { func() })
-    }
-}
-
-fun <T : Any?> invokeAndWait(func: () -> T): T {
-    val ref = Ref<T>()
-    ApplicationManager.getApplication().invokeAndWait({ ref.set(func()) }, ModalityState.defaultModalityState())
-    return ref.get()
-}

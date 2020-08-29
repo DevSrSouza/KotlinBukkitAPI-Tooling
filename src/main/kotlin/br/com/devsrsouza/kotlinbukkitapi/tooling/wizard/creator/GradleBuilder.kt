@@ -6,7 +6,6 @@ import br.com.devsrsouza.kotlinbukkitapi.tooling.wizard.SHADOW_PLUGIN
 import br.com.devsrsouza.kotlinbukkitapi.tooling.wizard.bukkit.ServerAPI
 import br.com.devsrsouza.kotlinbukkitapi.tooling.wizard.bukkit.dependencies
 import br.com.devsrsouza.kotlinbukkitapi.tooling.wizard.bukkit.repositories
-import org.jetbrains.kotlin.nj2k.replace
 import java.io.File
 
 fun generateGradleBuildFile(
@@ -21,7 +20,7 @@ fun generateGradleBuildFileContent(
         config: KBAPIModuleConfig
 ): String = with(config) {
     val kbapiDependencies = kbAPIVersion.dependencies
-            .dependenciesAsGradle()
+            .dependenciesAsGradle(with = ", changing")
 
     val kbapiRepositories = kbAPIVersion.repositories
             .repositoriesAsGradle()
@@ -30,11 +29,10 @@ fun generateGradleBuildFileContent(
     val serverRepositories = serverApi.repositories.repositoriesAsGradle()
     val serverDependencies = serverApi.dependencies.dependenciesAsGradle()
 
-    val pluginDependencies = externalPlugins
-            .flatMap { it.dependencies.map { dep -> dep.replace("{version}", it.versions.first { it.serverVersion == serverVersion }.version) } }
+    val pluginDependencies = "${DEFAULT_INDENTATION}val transitive = Action<ExternalModuleDependency> { isTransitive = false }\n" + externalPlugins
+            .flatMap { it.versions.first { it.serverVersion == serverVersion }.dependencies }
             .distinct()
-            .dependenciesAsGradle()
-
+            .dependenciesAsGradle(with = ", transitive")
 
     val pluginRepositories = externalPlugins
             .flatMap { it.repositories }
@@ -68,10 +66,13 @@ fun generateGradleBuildFileContent(
         |}
         |
         |dependencies {
+        |    compileOnly(kotlin("stdlib-jdk8"))
+        |
         |    //minecraft
         |$serverDependencies
         |
         |    //kotlinbukkitapi
+        |    val changing = Action<ExternalModuleDependency> { isChanging = true }
         |$kbapiDependencies
         |
         |    //plugins
@@ -80,7 +81,7 @@ fun generateGradleBuildFileContent(
         |
         |bukkit {
         |    main = "${packageName}.${pluginMainName}"
-        |    depend = listOf("KotlinBukkitAPI", ${plugins})
+        |    depend = listOf("KotlinBukkitAPI"${plugins.mapIfNotBlank { ", $it" }})
         |    ${description.mapIfNotBlank { "description = \"$it\"" }}
         |    ${author.mapIfNotBlank { "author = \"$it\"" }}
         |    ${website.mapIfNotBlank { "website = \"$it\"" }}
@@ -106,9 +107,9 @@ fun generateGradleBuildFileContent(
     """.trimMargin()
 }
 
-private inline fun List<String>.dependenciesAsGradle(configuration: String = "compileOnly"): String =
+private inline fun List<String>.dependenciesAsGradle(configuration: String = "compileOnly", with: String = ""): String =
         joinToString("\n") {
-            "$configuration(\"${it}\")"
+            "$configuration(\"${it}\"$with)"
         }.prependIndent(DEFAULT_INDENTATION)
 
 private inline fun List<String>.repositoriesAsGradle(): String =
