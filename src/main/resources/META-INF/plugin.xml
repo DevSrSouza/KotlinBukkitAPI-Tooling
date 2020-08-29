@@ -7,6 +7,8 @@
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.kotlin</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.externalSystem</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
@@ -16,6 +18,8 @@
                   implementationClass="br.com.devsrsouza.kotlinbukkitapi.tooling.bukkript.BukkriptFileType" />
         <internalFileTemplate name="Bukkript Script" />
         <iconProvider implementation="br.com.devsrsouza.kotlinbukkitapi.tooling.bukkript.BukkriptIconProvider" order="first"/>
+
+        <moduleBuilder builderClass="br.com.devsrsouza.kotlinbukkitapi.tooling.wizard.KBAPIModuleBuilder" />
     </extensions>
 
     <extensions defaultExtensionNs="org.jetbrains.kotlin">

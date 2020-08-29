@@ -13,7 +13,8 @@ version = "0.0.2"
 
 repositories {
     jcenter()
-    maven("http://nexus.devsrsouza.com.br/repository/maven-public/")
+    //maven("http://nexus.devsrsouza.com.br/repository/maven-public/")
+    mavenLocal()
 }
 
 dependencies {
@@ -27,7 +28,7 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "2020.1.2"
+    version = "2020.2"
 
     setPlugins("java", "Kotlin")
 }
@@ -44,7 +45,7 @@ tasks {
         kotlinOptions.jvmTarget = "1.8"
     }
     publishPlugin {
-        token = System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken")
+        token(System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken"))
     }
 }
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
