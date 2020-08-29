@@ -3,7 +3,9 @@ package br.com.devsrsouza.kotlinbukkitapi.tooling.menu
 import br.com.devsrsouza.kotlinbukkitapi.tooling.bukkript.BukkriptFileType
 import com.intellij.openapi.fileEditor.*
 import com.intellij.openapi.fileEditor.impl.text.TextEditorProvider
+import com.intellij.openapi.module.ModuleUtilCore
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.kotlin.idea.KotlinFileType
 
@@ -13,23 +15,35 @@ class MenuPreviewFileEditorProvider : WeighedFileEditorProvider() {
         const val ID = "kotlinbukkitapi-menu-preview"
     }
 
-    override fun getEditorTypeId(): String =
-            ID
+    override fun getEditorTypeId(): String = ID
 
     override fun accept(project: Project, file: VirtualFile): Boolean {
 
         val type = file.fileType
 
-        if(type != KotlinFileType.INSTANCE && type != BukkriptFileType.INSTANCE) return false
+        if(type == BukkriptFileType.INSTANCE) return true
 
-        return true
-//        return PsiManager.getInstance(project).findFile(file)?.findDescendantOfType<KtCallExpression> {
-//            findMenuDeclaration(it) != null
-//        } != null
+        if(type != KotlinFileType.INSTANCE) return false
+
+        val module = ModuleUtilCore.findModuleForFile(file, project) ?: return false
+
+        val root = ModuleRootManager.getInstance(module)
+        var hasKotlinBukkitAPI = false
+
+        root.orderEntries().withoutSdk().forEachLibrary {
+            if((it.name ?: "").contains("kotlinbukkitapi", true)) {
+                hasKotlinBukkitAPI = true
+
+                false
+            } else {
+                true
+            }
+        }
+
+        return hasKotlinBukkitAPI
     }
 
     override fun createEditor(project: Project, file: VirtualFile): FileEditor {
-        println(file.canonicalPath)
         val editor: TextEditor = TextEditorProvider.getInstance().createEditor(project, file) as TextEditor
         val preview =
                 MenuPreviewFileEditor(project, file, editor)
