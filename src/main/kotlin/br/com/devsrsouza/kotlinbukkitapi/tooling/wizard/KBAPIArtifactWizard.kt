@@ -50,8 +50,8 @@ class KBAPIArtifactWizard(val config: KBAPIModuleConfig) : ModuleWizardStep() {
                 VSizePolicy = GridConstraints.SIZEPOLICY_FIXED
         )
 
-        groupId = addLabelText("GroupId", config.artifactGroup, row = 1)
-        artifactId = addLabelText("Plugin Name", config.artifactId, row = 2)
+        artifactId = addLabelText("Plugin Name", config.artifactId, row = 1)
+        groupId = addLabelText("GroupId", config.artifactGroup, row = 2)
         version = addLabelText("Version", config.artifactVersion, row = 3)
         author = addLabelText("Author", config.author, row = 4)
         website = addLabelText("Website", config.author, row = 5)
