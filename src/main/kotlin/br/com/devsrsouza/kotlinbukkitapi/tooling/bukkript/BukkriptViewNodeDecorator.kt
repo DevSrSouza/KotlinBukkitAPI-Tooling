@@ -11,16 +11,12 @@ class BukkriptViewNodeDecorator : ProjectViewNodeDecorator {
     override fun decorate(node: ProjectViewNode<*>, data: PresentationData) {
         val file = node.virtualFile ?: return
 
-        println(file.name)
-
         val icon = when {
             file.isScriptFolder() -> Assets.FolderScript
             file.isPluginsFolder() -> Assets.FolderPlugins
             file.isBukkriptFolder() -> Assets.FolderBukkript
             else -> null
         }
-
-        println(icon)
 
         if(icon != null) {
             node.icon = icon

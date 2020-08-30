@@ -70,8 +70,6 @@ fun findMenuDeclaration(
 
         val item = runCatching { MinecraftItem.valueOf(materialName) }.getOrNull()
 
-        println("Slot $line, $slot using item: $materialName")
-
         val isSelected = it.getLineNumber() == currentSelectedLine
 
         MenuSlotDeclaration(
