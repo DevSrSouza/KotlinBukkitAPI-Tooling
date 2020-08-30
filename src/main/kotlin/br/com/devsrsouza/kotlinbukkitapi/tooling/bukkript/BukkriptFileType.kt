@@ -14,7 +14,7 @@ class BukkriptFileType : LanguageFileType(KotlinLanguage.INSTANCE), FileTypeIden
         val INSTANCE = BukkriptFileType()
     }
 
-    override fun getIcon(): Icon? = Assets.KotlinBukkitAPIIcon
+    override fun getIcon(): Icon? = Assets.Bukkript
 
     override fun getName(): String = BUKKRIPT_FILE
 
