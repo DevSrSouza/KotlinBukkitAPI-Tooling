@@ -91,6 +91,7 @@ tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml
         <ul>
         <li>KotlinBukkitAPI Project Wizard</li>
         <li>Menu Preview tab only avaiable on projects that was KotlinBukkitAPI or is a Bukkript script.</li>
+        <li>Custom folder icons for highlight the Bukkript related folders.</li>
         </ul>
     """.trimIndent())
 }
