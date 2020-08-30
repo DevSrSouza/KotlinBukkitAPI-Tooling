@@ -20,6 +20,8 @@
         <iconProvider implementation="br.com.devsrsouza.kotlinbukkitapi.tooling.bukkript.BukkriptIconProvider" order="first"/>
 
         <moduleBuilder builderClass="br.com.devsrsouza.kotlinbukkitapi.tooling.wizard.KBAPIModuleBuilder" />
+
+        <projectViewNodeDecorator implementation="br.com.devsrsouza.kotlinbukkitapi.tooling.bukkript.BukkriptViewNodeDecorator" />
     </extensions>
 
     <extensions defaultExtensionNs="org.jetbrains.kotlin">
