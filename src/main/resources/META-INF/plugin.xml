@@ -9,6 +9,7 @@
     <depends>org.jetbrains.kotlin</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.externalSystem</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
