@@ -7,8 +7,8 @@ data class MenuDeclaration(
 )
 
 data class MenuSlotDeclaration(
-    val line: Int,
-    val slot: Int,
-    val itemId: Int?,
-    val isSelected: Boolean = false
+        val line: Int,
+        val slot: Int,
+        val item: String,
+        val isSelected: Boolean = false
 )

@@ -17,6 +17,7 @@ class InventoryComponent(
         private val minecraftFontResource = "/assets/fonts/Minecraftia-Regular.ttf"
         private val spritesFolder = "/assets/sprites"
         private val itemsSpriteFolder = "/assets/items"
+        private val items13SpriteFolder = "/assets/items-13"
 
         // the selected-border is 36x36 and not 32x32
         private val selectedBorderSizeDiff = 2
@@ -34,8 +35,14 @@ class InventoryComponent(
     private val itemsImage = declaration.slots.filter {
         it.line in 1..declaration.lines && it.slot in 1..9
     }.keysToMap {
-        ImageLoader.loadFromResource("$itemsSpriteFolder/${it.itemId}-0.png")
-            //?.getScaledInstance(16, 16, Image.SCALE_FAST)
+        val item = runCatching { MinecraftItem.valueOf(it.item) }.getOrNull()
+
+        if(item != null) {
+            // TODO: Support data
+            ImageLoader.loadFromResource("$itemsSpriteFolder/${item.id}-0.png")
+        } else {
+            ImageLoader.loadFromResource("$items13SpriteFolder/${it.item.toLowerCase()}.png")
+        }
     }
     private val selectionImage = if(declaration.slots.any { it.isSelected })
         ImageLoader.loadFromResource("$spritesFolder/selected-border.png")

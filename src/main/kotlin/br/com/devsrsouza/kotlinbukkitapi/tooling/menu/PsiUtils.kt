@@ -68,14 +68,12 @@ fun findMenuDeclaration(
         val typeExpression = materialExpression.selectorExpression as? KtNameReferenceExpression ?: return@mapNotNull null
         val materialName = typeExpression.text ?: return@mapNotNull null
 
-        val item = runCatching { MinecraftItem.valueOf(materialName) }.getOrNull()
-
         val isSelected = it.getLineNumber() == currentSelectedLine
 
         MenuSlotDeclaration(
             line,
             slot,
-            item?.id,
+            materialName,
             isSelected
         )
     }
