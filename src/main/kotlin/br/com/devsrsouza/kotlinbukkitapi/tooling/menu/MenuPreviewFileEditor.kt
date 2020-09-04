@@ -24,6 +24,10 @@ class MenuPreviewFileEditor(
     private val mainEditor: TextEditor
 ) : UserDataHolderBase(), FileEditor {
 
+    companion object {
+        const val REBUILD_DELAY_MILLISECONDS = 200
+    }
+
     private val mySwingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
     private val myDocument = FileDocumentManager.getInstance().getDocument(myFile)!!
     private val myUi = JPanel().apply {
@@ -49,7 +53,7 @@ class MenuPreviewFileEditor(
             override fun documentChanged(event: DocumentEvent) {
                 mySwingAlarm.addRequest({
                     rebuild(currentScroll.viewport.viewPosition)
-                }, 50)
+                }, REBUILD_DELAY_MILLISECONDS)
             }
         })
 
