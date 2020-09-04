@@ -9,7 +9,7 @@ val kotlinBukkitAPIVersion = "0.1.0-SNAPSHOT"
 val bukkriptVersion = "0.1.0-SNAPSHOT"
 
 group = "br.com.devsrsouza.kotlinbukkitapi"
-version = "0.0.4"
+version = "0.0.5"
 
 repositories {
     jcenter()
@@ -85,6 +85,16 @@ tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml
 
 
     changeNotes("""
+        <h3>0.0.5</h3>
+        <br />
+        
+        <ul>
+        <li>Menu Preview support for 1.13+ Material enum.</li>
+        <li>Increase Menu Preview performance</li>
+        </ul>
+        
+        <br />
+        
         <h3>0.0.3</h3>
         <br />
         
