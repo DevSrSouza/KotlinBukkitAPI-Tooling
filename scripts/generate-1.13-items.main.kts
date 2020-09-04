@@ -17,9 +17,14 @@
 @file:DependsOn("ar.com.hjg:pngj:2.1.0")
 @file:DependsOn("com.github.zh79325:open-gif:1.0.4")
 
+// CODE GENERATIOn
+@file:DependsOn("com.squareup:kotlinpoet:1.6.0")
+
 import com.sksamuel.scrimage.ImmutableImage
-import com.sksamuel.scrimage.nio.PngReader
+import com.sksamuel.scrimage.ScaleMethod
 import com.sksamuel.scrimage.nio.PngWriter
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.TypeSpec
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.client.request.*
@@ -27,23 +32,24 @@ import it.skrape.core.htmlDocument
 import it.skrape.extract
 import it.skrape.skrape
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
+import java.awt.Color
+import java.awt.image.BufferedImage
 import java.io.File
-import kotlinx.coroutines.flow.*
 
 data class Item(
         val id: String,
-        val image: String
+        val image: String,
 )
 
-val items = skrape {
+var items = skrape {
     url = "https://www.deadmap.com/idlist"
 
     extract {
         htmlDocument {
             findFirst("#idlist").findAll("tr") {
-                PngReader()
-
                 map {
                     val img = it.findFirst("img")
                             .attribute("src")
@@ -51,7 +57,7 @@ val items = skrape {
 
                     val id = it.findFirst("i").text
 
-                    Item(id, "https://www.deadmap.com/$img")
+                    Item(id.removePrefix("minecraft:"), "https://www.deadmap.com/$img")
                 }
             }
         }
@@ -60,35 +66,59 @@ val items = skrape {
 
 println(items.joinToString("\n"))
 
+// FIXERS
+val fixers = mapOf(
+        "staned" to "stained",
+        "dandelion_yellow" to "yellow_dye"
+)
+
+items = items.map { it.copy(fixers.entries.fold(it.id) { id, entry -> id.replace(entry.key, entry.value) }) }
+
 runBlocking {
     val client = HttpClient(Apache)
 
     val iconsFolder = File("../src/main/resources/assets/items-13").canonicalFile
     iconsFolder.mkdirs()
 
-    items.withIndex()
+    items
+            .withIndex()
             .asFlow()
             .onEach { (index, item) ->
-                val (id, imageUrl) = item
-                println("Downloading item: $id ($index/${items.size - 1})")
-                val name = id.removePrefix("minecraft:")
+                val (name, imageUrl) = item
+                println("Downloading item: $name ($index/${items.size - 1})")
 
                 val imageBytes = client.get<ByteArray>(imageUrl)
 
                 val image = ImmutableImage.loader()
+                        .type(BufferedImage.TYPE_INT_ARGB)
                         .fromBytes(imageBytes)
                         .run {
                             val tags = metadata.tags()
                             val width = tags.first { it.name.contains("Width") }.rawValue.toInt()
                             val height = tags.first { it.name.contains("Height") }.rawValue.toInt()
 
-                            if(width > 32 || height > 32)
-                                scaleTo(32, 32)
-                            else this
+                            if(width > 32 || height > 32) {
+                                scaleTo(32, 32, ScaleMethod.FastScale)
+                            } else this
                         }
 
                 image.output(PngWriter.NoCompression, File(iconsFolder, "$name.png"))
-                println("Complete download and resize: $id ($index/${items.size - 1})")
+                println("Complete download and resize: $name ($index/${items.size - 1})")
             }
             .collect()
 }
+
+println("Generating MinecrateItem13 Enumeration")
+
+FileSpec.builder("br.com.devsrsouza.kotlinbukkitapi.tooling.menu", "MinecraftItem13")
+        .addType(
+                TypeSpec.enumBuilder("MinecraftItem13")
+                        .apply {
+                            for ((id, _) in items) {
+                                addEnumConstant(id.toUpperCase())
+                            }
+                        }
+                        .build()
+        )
+        .build()
+        .writeTo(File("../src/main/kotlin/").canonicalFile)

@@ -35,13 +35,19 @@ class InventoryComponent(
     private val itemsImage = declaration.slots.filter {
         it.line in 1..declaration.lines && it.slot in 1..9
     }.keysToMap {
-        val item = runCatching { MinecraftItem.valueOf(it.item) }.getOrNull()
+        // TODO: Support data
+        val item13 = runCatching { MinecraftItem13.valueOf(it.item) }.getOrNull()
 
-        if(item != null) {
-            // TODO: Support data
-            ImageLoader.loadFromResource("$itemsSpriteFolder/${item.id}-0.png")
+        if(item13 != null) {
+            ImageLoader.loadFromResource("$items13SpriteFolder/${item13.name.toLowerCase()}.png")
         } else {
-            ImageLoader.loadFromResource("$items13SpriteFolder/${it.item.toLowerCase()}.png")
+            val item = runCatching { MinecraftItem.valueOf(it.item) }.getOrNull()
+
+            if (item != null) {
+                ImageLoader.loadFromResource("$itemsSpriteFolder/${item.id}-0.png")
+            } else {
+                null
+            }
         }
     }
     private val selectionImage = if(declaration.slots.any { it.isSelected })
