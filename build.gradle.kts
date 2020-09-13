@@ -5,14 +5,15 @@ plugins {
 }
 
 val kotlinVersion = "1.4.0"
-val kotlinBukkitAPIVersion = "0.1.0-SNAPSHOT"
-val bukkriptVersion = "0.1.0-SNAPSHOT"
+val kotlinBukkitAPIVersion = "0.2.0-SNAPSHOT"
+val bukkriptVersion = "0.2.0-SNAPSHOT"
 
 group = "br.com.devsrsouza.kotlinbukkitapi"
-version = "0.0.5"
+version = "0.0.6-SNAPSHOT"
 
 repositories {
     jcenter()
+    mavenLocal()
     maven("http://nexus.devsrsouza.com.br/repository/maven-public/")
 }
 
@@ -85,6 +86,13 @@ tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml
 
 
     changeNotes("""
+        <h3>0.0.6</h3>
+        <br />
+        
+        <ul>
+        <li>Update the embedded version of Bukkript and KotlinBukkitAPI.</li>
+        </ul>
+        
         <h3>0.0.5</h3>
         <br />
         
