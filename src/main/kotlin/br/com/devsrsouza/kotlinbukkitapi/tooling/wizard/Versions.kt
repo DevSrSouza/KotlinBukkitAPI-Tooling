@@ -28,9 +28,9 @@ data class KotlinBukkitAPIVersion(
 
     val repositories = listOf(
         "http://nexus.devsrsouza.com.br/repository/maven-public/",
-        "https://oss.jfrog.org/oss-snapshot-local/",
+        /*"https://oss.jfrog.org/oss-snapshot-local/", // TODO: create a option to provide this repositories optionally
         "http://nexus.okkero.com/repository/maven-releases/",
-        "https://repo.codemc.org/repository/maven-public"
+        "https://repo.codemc.org/repository/maven-public",*/
     )
 
     val dependencies = listOf(

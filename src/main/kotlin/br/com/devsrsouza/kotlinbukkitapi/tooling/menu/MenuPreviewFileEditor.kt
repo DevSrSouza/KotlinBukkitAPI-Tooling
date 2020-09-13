@@ -25,7 +25,7 @@ class MenuPreviewFileEditor(
 ) : UserDataHolderBase(), FileEditor {
 
     companion object {
-        const val REBUILD_DELAY_MILLISECONDS = 200
+        const val REBUILD_DELAY_MILLISECONDS = 80
     }
 
     private val mySwingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
@@ -42,31 +42,39 @@ class MenuPreviewFileEditor(
     private lateinit var currentScroll: JBScrollPane
     private var currentSelectedLine: Int? = null
 
-    init {
+    private val documentListener = object : DocumentListener {
+        override fun beforeDocumentChange(event: DocumentEvent) {
+            mySwingAlarm.cancelAllRequests()
+        }
+        override fun documentChanged(event: DocumentEvent) {
+            mySwingAlarm.addRequest({
+                rebuild(currentScroll.viewport.viewPosition)
+            }, REBUILD_DELAY_MILLISECONDS)
+        }
+    }
+
+    private val caretListener = object : CaretListener {
+        override fun caretPositionChanged(event: CaretEvent) {
+            currentSelectedLine = event.newPosition.line
+            mySwingAlarm.addRequest({
+                rebuild(currentScroll.viewport.viewPosition)
+            }, REBUILD_DELAY_MILLISECONDS)
+        }
+    }
+
+    fun setup() {
         rebuild(null)
 
         // listen to the source code changes to rebuild the UI
-        myDocument.addDocumentListener(object : DocumentListener {
-            override fun beforeDocumentChange(event: DocumentEvent) {
-                mySwingAlarm.cancelAllRequests()
-            }
-            override fun documentChanged(event: DocumentEvent) {
-                mySwingAlarm.addRequest({
-                    rebuild(currentScroll.viewport.viewPosition)
-                }, REBUILD_DELAY_MILLISECONDS)
-            }
-        })
+        myDocument.addDocumentListener(documentListener)
 
         // listen to cursor changes to make a slot selectable
-        mainEditor.editor.caretModel.addCaretListener(object : CaretListener {
-            override fun caretPositionChanged(event: CaretEvent) {
-                currentSelectedLine = event.newPosition.line
-                rebuild(currentScroll.viewport.viewPosition)
-            }
-        })
+        mainEditor.editor.caretModel.addCaretListener(caretListener)
     }
 
     fun rebuild(currentViewPosition: Point?) {
+        if(!myUi.isShowing) return
+
         val tree = PsiDocumentManager.getInstance(myProject).getPsiFile(myDocument) ?: return
 
         // clear the old UI
@@ -146,8 +154,18 @@ class MenuPreviewFileEditor(
         return null
     }
 
+    override fun selectNotify() {
+        setup()
+    }
+
+    override fun deselectNotify() {
+        dispose()
+    }
+
     override fun dispose() {
         mySwingAlarm.cancelAllRequests()
+        myDocument.removeDocumentListener(documentListener)
+        mainEditor.editor.caretModel.removeCaretListener(caretListener)
     }
 
     private fun JComponent.centerComponent(): JPanel {
