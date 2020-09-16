@@ -9,7 +9,7 @@ val kotlinBukkitAPIVersion = "0.2.0-SNAPSHOT"
 val bukkriptVersion = "0.2.0-SNAPSHOT"
 
 group = "br.com.devsrsouza.kotlinbukkitapi"
-version = "0.0.6-SNAPSHOT"
+version = "0.0.6"
 
 repositories {
     jcenter()
