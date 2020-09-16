@@ -43,6 +43,7 @@ fun generateGradleBuildFileContent(
     val plugins = externalPlugins.joinToString { "\"${it.name}\"" }
 
     return """
+        |// More about the setup here: https://github.com/DevSrSouza/KotlinBukkitAPI/wiki/Getting-Started
         |plugins {
         |    kotlin("jvm") version "${kbAPIVersion.kotlinVersion}"
         |    kotlin("plugin.serialization") version "${kbAPIVersion.kotlinVersion}"

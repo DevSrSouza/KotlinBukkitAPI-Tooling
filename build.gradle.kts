@@ -91,6 +91,8 @@ tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml
         
         <ul>
         <li>Update the embedded version of Bukkript and KotlinBukkitAPI.</li>
+        <li>Adding KotlinBukkitAPI 0.2.0-SNAPSHOT to the Project Wizard.</li>
+        <li>Improving overall performance of Menu Preview.</li>
         </ul>
         
         <h3>0.0.5</h3>
