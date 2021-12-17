@@ -50,7 +50,7 @@ tasks {
 }
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
     sinceBuild("201")
-    untilBuild("203.*")
+    untilBuild("213.*")
 
     pluginDescription("""
         <img src="https://github.com/DevSrSouza/KotlinBukkitAPI/raw/master/logo.png" width="417" height="161"/>
